@@ -53,7 +53,8 @@ categories: jekyll update
 ```
  
 ## 6. 푸쉬
- ```git remote add origin 저장소URL  // 저장소URL은 https://github.com/~~~/~~~ .git을 의미  
+ ```
+ git remote add origin 저장소URL  // 저장소URL은 https://github.com/~~~/~~~ .git을 의미  
  git push origin master  
  => 충돌이 발생한다면  `git push origin master -f`  
 ```
