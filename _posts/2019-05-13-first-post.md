@@ -32,13 +32,13 @@ categories: jekyll update
   `git commit -m "메세지"`  
   
 ## 5. 상태확인  (안해도됨)
-'''
+```
  git status  
  git diff  
  git log  
  git shortlog  
  git show  
-'''
+```
  
 ## 6. 푸쉬
  `git remote add origin 저장소URL`  // 저장소URL은 https://github.com/~~~/~~~ .git을 의미  
