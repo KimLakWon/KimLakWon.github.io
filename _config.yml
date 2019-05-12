@@ -108,7 +108,7 @@ analytics:
 # Site Author
 author:
   name             : "Kim Lakwon"
-  avatar           : "/assets/image/logo.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/image/me.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Engineer"
   location         : "Sanbon"
   email            : "dkqjwlrk1209@naver.com"
