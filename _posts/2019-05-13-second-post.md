@@ -166,3 +166,181 @@ categories: jekyll update
   - 주로 읽기와 업데이트를 한다 : 배열
     주로 삽입과 삭제를 한다 : 리스트
 
+## 9. 수학적 표현
+ 1) 3가지 요소 : Operators(연산자), Operands(피연산자), Delimiters(구획문자)
+ 2) 연산자의 Degree : Binary ( a+b 이런거), Unary ( +g 이런거 )
+ 3) Infix Form 와 Postfix Form
+  - Infix Form : a+b  // Parse가 어려움
+  - Postfix Form : ab+ // Unary 연산자들은 @나 ?로 바꿔서 표현
+ * Infix = (a+b)*(c-d)/(e+f)
+   Postfix = ab+cd-*ef+/
+ => postfix로 바꾸면 Stack에 넣어서 계산하기 쉬움.
+ 4) Infix to Postfix Confersion
+  - 피연산자는 바로 output으로 넣음.
+  - 연산자는 일단 stack에 넣음
+  - 근데 stack에 넣을때 만약 우선순위가 더 높거나 같은 애가 있으면 걔는 빼고 넣음
+  - 다 읽었으면 stack에서 다 빼서 output에 넣음.
+  - )가 있으면 괄호 안에 있는거 다 처리해야됨.
+  - 우선순위 : *,/  > +,-  > (
+5) Prefix Form
+  - Infix Form = a+b
+    Postfix Form = ab+
+    Prefix Form = +ab
+6) Infix to Prefix Conversion
+  - 일단 postfix로 바꾼다
+  - 뒤집는다.
+ 7) Binary Tree Form
+  - 트리로 만들면 보기 좋고, 효율적이다.
+
+## 10. 트리 (Tree)
+ 1) Linear List vs Tree
+  - Linear List : 일련의 데이터에 쓰기 유용하다.
+  - Tree : 계층적인 데이터에 쓰기 유용하다. (ex. 회사의 사원도, 컴퓨터의 파일)
+ 2) 트리의 특징과 용어
+  - 커넥티드 그래프이다.
+  - 사이클이 없는 그래프이다.
+  - 맨 위는 root, 맨 아래는 leaves 다.
+  - 트리는 서브 트리로 이루어져있다.
+  - root는 레벨1 (또는 0)이다. 그 밑은 레벨 2, 3, 4 ...
+  - 레벨 = height = depth
+  - Node Degree : 자식의 수, Tree Degree : 트리에서 Max Node Degree
+  - 같은 레벨의 노드는 형제(sibling), 그 노드부터 root까지는 선조(ancestor), 그것의 서브트리에 속하는 노드는 자손(descendant)
+ 3) 가장 안좋은 트리
+  - 한쪽으로 쭉 기울어진 트리..
+  - 노드가 최소인 트리
+  - 노드의 수와 높이가 같은 트리
+ 4) 트리의 성질
+  - root를 제외한 모든 노드는 정확히 하나의 부모를 갖고 있다.
+  - n개의 노드를 가진 트리는 n-1개의 간선(edge)이 있다.
+  - 각 노드에서 root까지는 정확히 1개의 path가 있다.
+ 5) 이진 트리 (Binary Tree)
+  - 노드가 n개 일 때, 총 n+1개의 leaves가 있다.
+  - 깊이가 k일 때, 최대 2^k - 1 개의 노드가 있을 수 있다.
+  - Full binary tree : 각각의 노드가 leaf 거나 2개의 자식을 갖는 경우
+  - Complete binary tree : 왼쪽부터 쭉 차있는 경우
+ 6) Representation
+  - Array로 하면 불필요한 공간이 많아지고 삽입/삭제가 어려우므로 링크드 리스트로 만든다.
+  - data, leftChild, rightChild를 갖는 노드를 연결한다.
+ 7) Traversal
+  - VLR(Preorder), LVR(Inorder), LRV(Postorder), Level order 이렇게 4가지 방식이 있다. (V:Visit, L:Left, R:Right)
+  - 응용 : 트리 복사하기, ★높이 구하기, 노드의 개수 구하기
+  - 순환 함수를 잘 이용하자.
+  - 하지만 순환 함수를 사용하면 메모리가 많이 필요하고 속도가 느리다.
+    Iterative하게 Stack을 이용해서 구현할 수도 있다.
+  - Complexities : time - O(N)  // N : 노드,    space - O(n) // n : 최고 높이
+  - Level order : 큐를 이용해서 구함.
+ 8) Binary Tree Construction
+  - 자식이 한 개일 때, 왼쪽인지 오른쪽인지 잘 구별해야함.
+  - preoder, postoroder, inorder, level order를 이용해서 잘 구별하자. (퀴즈 푸는 것 처럼..)
+
+## 11. BST (Binary Search Tree)
+ 1) Search tree (검색 트리)
+  - 보통 검색 트리는 딕셔너리를 구현하기 위해 사용된다.
+  - 리스트와 해쉬 테이블보다 성능이 좋다.
+ 2) BST의 특징
+  - 원래 트리는 비어있을 수 없지만, BST는 비어있어도 된다.
+  - 각각의 노드는 (Key, Value) 쌍으로 되어있다.
+  - 자신의 왼쪽 서브트리의 Key들은 자신보다 작거나 같아야하며, 오른쪽은 크거나 같아야 한다.
+ 3) 연산자
+  - IsEmpty : O(1)
+  - Search, Insert, Delete : 최악 O(n), 보통 O(log n = Height)
+  - 다른건 다 쉽지만, Degree 2 Node를 Delete하는게 좀 어려움.
+    이거는 자기랑 가장 비슷한 작은 걸 올려놓으면 됨.
+ 4) Indexed Binary Search Tree
+  - 여기서 Index라는건 자기의 왼쪽 서브트리의 노드의 수를 적어놓는 것을 의미함.
+  - 그러면 Rank를 구할 수 있고, Search, Insert 등을 Index로 할 수 있음.
+    ex. 5번째 큰 애를 찾아라.  10번째에 m을 넣어라
+  - Rank 구할 때 오른쪽 자식으로 가면 Index를 더하면 됨. 그리고 마지막에 자기 자신을 더함.
+  - 업데이트가 되면 쭉 올라가면서 내가 왼쪽 자식인 선조들만 1을 증가시키면 됨.
+
+## 12. Graph (그래프)
+ 1) 그래프의 특징
+  - V는 정점(노드) 집합, E는 간선(링크, edge) 집합.
+  - Undirected와 Directed가 있음
+ 2) Undirected 그래프의 특징
+  - n개의 정점이 있으면 그 쌍은 n(n-1)개임, 그러나 undirected이므로 2로 나눠서 n(n-1)/2임
+  - complete가 아닌 이상 항상 n(n-1)/2 이하임
+ 3) Directed 그래프의 특징
+  - n(n-1)이하임
+ 4) Vertex Degree
+  - 몇 개가 연결되어 있는가.
+  - In-Degree : 나에게 들어오는 것은 몇 개인가?
+  - Out-Degree : 내가 나가는 것은 몇 개인가?
+ 5) 응용 : Graph Coloring
+  - 인접한 노드끼리는 다른 색을 칠하는 것, 최소 몇 개를 칠해야 할까?
+  - 평탄성(Planarity) : edge들끼리 서로 교차하지 않는 것.
+  - Kuratowski's Theorem에 의하면 K5, K3,3 두 형태의 그래프 중 어느 하나라도 포함 하지 않고 있으면 
+    평탄성이 유지된다.
+  - 결국 저렇게 바꿔서 하면 된다.. (?)
+ 6) 그래프의 여러가지 문제들
+  - Path Problems : 어떤 길로 가야 좋을까
+  - Connected Components : 갈 수 있는 요소들을 Connected 되어있다한다.
+  - Spanning tree : 그래프의 모든 노드를 포함하는 트리
+   => MST (Minimum Cost Spanning Tree)
+ 7) Adjacency Matrix
+  - 그래프를 행렬로 표현해보자.
+  - 대각선은 모두 0이고, 연결되어있는 것들은 1로 표현하자.
+  - Undirected graph는 대칭임.
+  - 공간 : N^2, find degree : O(N)
+ 8) Adjacency List
+  - 그래프를 리스트로 표현해보자.
+  - 모든 노드에 대해 배열을 만들고, 각 노드에 연결된 것들만 리스트로 추가
+  - 공간 : N+e 또는 N+2e
+ 9) Graph Search Methods
+  - 그래프를 탐색해보자.
+  - DFS(Depth-First Search) :  계속 파고들음, 인접행렬 : O(n^2), 인접리스트 : O(n+e)
+    이걸로 Connected 된 요소들을 알 수 있다.
+  - BFS(Breadth-First Search) : 레벨별로 큐를 이용해서, O(n + e)
+  - DFS와 BFS는 복잡도는 똑같고 결과도 같다.
+
+## 13. MST(Minimum Spanning Tree)
+ 1) MST?
+  - 그래프에 Cost(Weight)가 있고, 모든 노드를 들리지만 가장 적은 Cost로 들리는 트리
+  - 필요없는 나뭇가지를 쳐내듯한다고 해서 Spaning Tree
+ 2) Kruskal's Method
+  - 처음에 노드만 있고 엣지는 없는 걸로 시작함.
+  - 가장 적은 Cost부터 연결하기 시작.
+  - 이 때, 사이클이 생긴다면 연결하지 않음. (이미 더 좋은 길이 있다는 소리임)
+  - n-1개의 엣지를 연결했다면 멈춤.
+  - 모든 cost가 다를때 MST는 유니크함
+  - O(nlogn + eloge)
+ 3) Prim's Method
+  - 크루스칼처럼 노드만 있고 엣지는 없는 걸로 시작함.
+  - 한개의 노드를 추가시키고 그 노드랑 연결된 것 중에 cost가 제일 낮은거 연결.
+  - 그 연결된 노드도 추가시키고 가장 cost 낮은거 연결...
+  - N-1개의 엣지를 연결했다면 멈춤.
+  - 배열 : O(n^2),  바이너리 힙 : O(elogn), 피보나치 힙 : O(e+nlogn)
+  - 즉, 피보나치 힙 프림 > 바이너리 힙 프림 > 크루스칼 > 배열 프림
+ 4) Sollin's Method
+  - 모든 노드를 각각 그룹으로 설정한 뒤
+  - 가장 cost가 낮은것들을 다 연결한뒤 그룹핑을 다시 함.
+  - 결국 1개의 그룹이 될 때까지 계속 하면 됨.
+  - 병렬 컴퓨팅에 유리함.
+
+## 14. 소팅 (Sorting)
+ 1) Selection Sort (선택 정렬)
+  - 가장 가까운 곳에 꽂아 넣음.
+  - O(n^2)
+ 2) Quick Sort (퀵정렬)
+  - pivot을 설정해서 계속 분할하면 됨.
+  - pivot은 맨 왼쪽, 중간, 맨 오른쪽 이렇게 3개 골라가지고 Median을 pivot으로 설정하면 됨.
+  - 쉽게 새로 메모리 설정해서 하는 것도 가능하지만, In-Place도 가능함. (양쪽에 화살표 찍고 Swap을 이용해서)
+  - O(nlogn)
+ 3) Merge Sort (병합 정렬)
+  - 반 씩 쪼갠 뒤 정렬하며 합친다.
+  - 각 레벨은 O(n) 만큼이 필요하고, 레벨은 logn개 임.
+  - O(nlogn) 
+  - Natural Merge Sort라고 자를때 정렬된것만큼은 묶고 자르는것도있음..
+ 4) Merge Sort VS Quick Sort
+  - Space : 퀵은 O(1), 머지는 O(n)
+  - Time : 퀵은 평균 O(nlogn), 머지는 항상 O(nlogn)
+  - 언어 : 퀵은 C/C++, 머지는 Java   (왜냐하면 머지소트가 비교 연산이 적은데, 자바는 비교 연산이 비싸서 적은걸 선호함)
+ 5) 그 외 정렬
+  - Bubble Sort, Insertion Sort, Shell Sort...
+
+## 15. 해쉬 (Hash)
+ 1) Dictionary
+  - pair는 다른 key를 갖는다. pair = (key, element)
+  - 연산자 : Search, Delete, Insert
+ 2) Hash Tables
+  - Search, Insert, Delete : O(size) -> O(1)
