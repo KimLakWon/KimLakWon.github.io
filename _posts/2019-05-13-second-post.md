@@ -341,6 +341,27 @@ categories: jekyll update
 ## 15. 해쉬 (Hash)
  1) Dictionary
   - pair는 다른 key를 갖는다. pair = (key, element)
-  - 연산자 : Search, Delete, Insert
+  - 연산자 : Search, Delete, Insert 
  2) Hash Tables
-  - Search, Insert, Delete : O(size) -> O(1)
+  - Search, Insert, Delete : 최악 O(size) -> 최선 O(1)
+  - 배열은 table이라 부르며, 배열의 각 포지션을 bucket이라 부른다.
+  - 해쉬 함수 f는 키 k를 위한 home bucket이다.
+ 3) Problem
+  - 이미 자리가 점유되어있는데 또 들어가야한다면? => collision
+  => 최소화하기 이해 노력해야한다.
+  - index의 범위를 넘는 곳에 들어가야한다면? => overflow
+  => 새로운 공간을 마련해 주어야 한다.
+ 4) 좋은 해쉬 함수
+  - 나머지를 사용 + 나누는 수는 소수(prime number)를 사용한다.
+ 5) Linear Probing
+  - 넣어줄 자리가 없을 때 다음 bucket에 넣는다.
+  - 평균적으로 최대 75%는 차지 않도록 해야 성능이 좋다.
+ 6) Quadratic Probing
+  - 넣어줄 자리가 없을 때 좌우의 2의 제곱 순으로 간격을 띄워서 채운다.
+ 7) Rehasing
+  - 넣어줄 자리가 없을 때 또 다른 새로운 해쉬 함수를 사용한다.
+ 8) Sorted Chains
+  - 배열 + 링크드 리스트..  같은 bucket에 넣어야할 경우 링크를 달아서 노드를 추가한다.
+  - 성능 : 사이즈가 a일때, search나 insert는 1+(a/2)
+
+## 16. 우선순위 큐 (Priority Queue)
