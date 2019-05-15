@@ -365,3 +365,41 @@ categories: jekyll update
   - 성능 : 사이즈가 a일때, search나 insert는 1+(a/2)
 
 ## 16. 우선순위 큐 (Priority Queue)
+ 1) 특징
+  - Binary heap을 사용한다.
+  - empty, size, top은 O(1)만에 가능
+  - insert, remove는 O(logn)만에 가능 // n은 size
+  - Complete Binary Tree
+  - 배열에 넣을 때 index 1부터 넣는다. (노드의 고유번호 값과 일치시키려고)
+ 2) 힙소트
+  - 하나씩 빼서 정렬하면 그게 힙소트
+  - 우선순위 큐(max/min heap) 만드는거 O(n) 
+  - 빼는거 O(logn), n번 해야되니까 O(nlogn)
+  - 즉, O(nlogn)으로 merge,quick이랑 같다.
+  - In-place로 할 수 있음. (배열 끝으로 계속 보내면 됨) -> 공간복잡도 : O(1)
+ 3) Heapify
+  - 힙이 되도록 하는 것. (맨 위에 max/min을 올려놓는것)
+  - 바꿀 자식이 없을 때 까지 계속 밑으로 내려감.
+ 4) Machine Scheduling
+  - 여러개의 기계를 가장 효율좋게 돌리는 문제 -> NP-hard
+  - LPT schedules로 하면 최적은 아니더라도, 합리적인 스케쥴링이 가능함.
+  - O(nlogn + mn)
+  - PQ를 사용하면 O(nlog(mn))
+
+## 17. AVL Tree
+ 1) ABL
+  - Georgy Adelson-Velsky and Landis' tree (그래서 AVL..)
+  - Self-balancing binary tree (계속 밸런싱을 맞춤)
+ 2) Operation
+  - BST는 삽입/삭제가 보통 O(log n), 그리고 최악의 경우(밸런스가 한쪽으로 치우쳐져있을 경우)에 
+    O(n)이 되는데
+  - AVL은 최악의 경우에도 O(log n)을 보장함.
+  - 심지어 그 좋다는 Hash Table도 O(log n)을 보장하지 못하는데... ( 다틀렸을때 O(n)임..)
+ 3) Balance Factors
+  - 양쪽 서브 트리의 높이 차이에 대한 정보
+  - 각 노드에 -1 , 0 , 1을 심는다.
+ 4) Rotation
+  - RR, LR, RL, LL이 존재한다.
+ 5) but...
+  - RB Tree 만큼 효율이 좋지 않아서 딱히 안쓰인다고...
+
