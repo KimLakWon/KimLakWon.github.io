@@ -1,0 +1,526 @@
+---
+title: "데이터베이스 개념 정리"
+date: 2019-05-20 02:00:28 -0400
+categories: jekyll update
+---
+
+# 데이터베이스
+
+## 1. Introduction
+
+ **1) 데이터의 유형**
+  - 정형구조 : 구조가 있음. 학교(학생, 과목, 교수님) 이런식으로..
+  - 비정형구조 : 구조가 딱히 없음. 텍스트,오디오,이미지 ...
+  - 반정형구조 : 구조가 반정도 있음. 대부분 트리 모양. HTML, XML
+
+ **2) 데이터베이스의 특징**
+  - 대용량
+  - 디스크 상주 (메모리는 휘발성, 테이프는 너무 느림)
+  - CRUD
+  - 여러 사람 공유
+
+ **3) DBMS**
+  - 정의 : 데이터베이스를 저장하고 관리하는 소프트웨어 패키지
+  - 오라클 : 좀 비쌈, mySQL : 오픈소스, 액세스 : 윈도우에 깔려있음....
+
+ **4) DBMS가 필요한 이유 (★)**
+  - 데이터 추상화 : 프로그램 짜기 쉬움, 추상화가 없다면 물리적 구조를 명시해야되는데 너무 어려움..
+  - 데이터와 프로그램 독립 : 만약 종속이 되어있다면 디스크를 바꿀때마다 프로그램 다시 짜야됨..
+  - 데이터 중복(Redundancy) 문제 해결 : 같은 정보가 반복돼서 데이터 일관성이 깨지는 것을 방지할 수 있음..
+  - 데이터 무결성(Integrity) : DB는 무결성 제약조건을 만족하고 검증해야 되는데 이것을 DBMS가 알아서 해줌..
+  - 동시 접근 가능 : 여러 사용자가 DB에 동시에 접근했을 때 제어를 함으로써 일관서오 유지하고 속도도 빠름..
+  - 데이터 회복/복구 가능 : 시스템 고장이 났을 때 undo와 redo를 통해 복구가 가능
+  - 질의 언어 제공 및 최적화
+  - 데이터 보안 : 권한을 제공함.
+  - 다양한 인터페이스 제공
+
+ **5) DB 저장 방식 (추후에 자세히 다룸)**
+  - Heap File : 아무 방식 없이 '랜덤'으로 저장, 쉬움, 근데 정렬이 안되어있어서 검색이 좀..
+  - Sequential File : 순서가 있음, 정렬이 되어있음.
+  - Indexing File : 인덱스를 보고 찾음( 전화번호부 ) , B+ Tree
+  - Hashing File : 함수에 집어넣으면 나오기 때문에 빠름
+
+ **6) DB 기본 용어**
+  - 스키마(Schema) : 구조, 뼈대, 제약조건. (안에 내용물 없음, 거의 안 바뀜)
+  - 인스턴스(Instance) : 실제 데이터, 자주 바뀜
+  - DBMS Catalog (=meta-data) : 데이터에 대한 데이터( 데이터를 표현하기 위한 데이터 )  
+   ex) 학생의 속성은 N개이다. 총 용량은.., 테이블 이름은.. 뭐 이런거?
+  - 쿼리 : DB에 어떤 것을 요구하는 것.
+  - DDL(스키마, 테이블, 뷰 등을 정의) : CREATE, DROP, ALTER
+  - DML(인스턴스를 수정하고 검색) : SELECT, INSERT, DELETE, UPDATE
+
+ **7) ANSI 3층 스키마 구조 (데이터 추상화를 실현하기 위해 계층을 나눔)**
+  - Pyshical Schema : 어떻게 저장할 것인가? (디스크에 의존적)
+  - Conceptual Schema : 데이터의 의미는 무엇인가? (공통적인 논리적 전체 도면)
+  - External Schema(=Views) : 무슨 데이터를 사용할 것인가? (사용자의 요구사항을 만족시켜줌)
+  * Conceptual Schema는 물리적 독립성이 지켜지고, External Schema는 논리적 독립성이 지켜진다.
+
+ **8) DB 유저 계층**
+  - DBA : DB 행정가, 전문가로써, 보통 오라클 같은데서 시험보고 자격을 획득함.
+  - DB Designer : DB를 디자인함.
+  - 응용 프로그래머 : C나 Java 짜는 애들
+  - Casual end user : SQL 짜는 애들
+  - Naive end user : 엑셀 다루는 애들
+
+## 2. ER(Entity-Relationship) Model
+
+ **1) 개념**
+  - Entity(개체) : 어떤 존재 (교수, 학생, 과목..)
+  - Attribute(속성) : 그 존재를 묘사하는 성질들 (학번, 이름, 전화번호..)
+  - Value(값) : 실제 값 (201504832, 홍길동..)
+  - Entity Type(개체 형) : 같은 개체들을 묶어놓은 것 (INT)
+  - Key(키) : 각각 개체를 유일하게 식별할 수 있는 속성 (항상 하나 이상 키가 있어야 함)
+  - Relationship(관계) : 여러개 개체 사이를 연결하는 것
+  - ER 모델은 객체지향이 기본 개념이다.
+
+ **2) Attribute의 종류**
+  - Simple : 단 1개의 값 (학번, 이름..)
+  - Multi-Valued : 여러개의 값 (전화번호)
+  - Composite : 다른 속성을 구성함 (주소-시,로,도.., 성적-학기,그레이드..)
+  - Complex : Composite + Multi-Valued
+  - Derived : 다른 속성으로부터 계산이 가능한 것 (주민번호와 나이)
+  - Null : 현재 값이 알려지지 않았거나 존재하지 않는 것 ( 모르는 것도 정보임! )
+
+ **3) Relationship 제약 조건**
+  - Mapping Constraints : 1:1 , M:1, 1:M, M:N
+  - Participation Constraints : Total(무조건 참여해야됨), Partial(참여 안해도 됨)
+  - Min-Max Constraints : 적어도, 최대
+
+ **4) Recursive Relationship**
+  - degree가 1임.
+  - 같은 엔터티끼리의 관계를 의미함 (직원 - 상사와 부하)
+
+ **5) Weak Entity Types**
+  - 실제로 키가 없는 개체임.
+  - Strong Entity Type을 찾아서 도움을 받아야 함.
+
+ **6) Ternary Realtionship (3진 관계)**
+  - 2진 관계보다 더 명확한 의미관계를 부여해준다.
+  - ex. '사원'은 오직 '특정 카페'에서 '특정 맥주'를 마신다.
+
+ **7) 나쁜 디자인**
+  - 여러개 개체들을 하나에 모아서 쓸데없이 중복을 만들지 말아야한다.
+
+## 3. Enhanced ER Model (EER Model)
+
+ **1) Subclass & Superclass**
+  - 사원을 비서/엔지니어/기술자 이런식으로 나눌 수 있음.
+  - 이때 사원이 슈퍼 클래스, 비서/엔지니어/기술자가 서브 클래스 (부모-자식 관계)
+  - 단일 상속(1:M,트리구조)과 다중 상속(M:N)이 가능
+  - 제약조건
+   (1) Disjoint : 수퍼는 항상 최대 하나의 서브에만 속할 수 있다. 
+   (2) Overlap : 수퍼는 하나 이상의 서브에 속할 수 있다. 
+   (3) Total : 수퍼에 속한 개체는 항상 서브에 속해야한다. 
+   (4) Partial : 수퍼에 속한 개체는 서브에 속하지 않을수도있다.
+
+ **2) Specialization (세분화)**
+  - 슈퍼로부터 서브의 셋을 정의한다.
+  - Top-down (위에서 밑으로)
+
+ **3) Generaliation (일반화)**
+  - 서브들로부터 슈퍼를 정의한다.
+  - Bottom-up (밑에서 위로)
+
+## 4. Relational Model (관계형 모델)
+
+ **1) 정의**
+  - 가장 많이 사용하는 모델임.
+  - 집합을 이용해서 수학적 관계 개념을 도입함.
+
+ **2) 용어**
+  - Relation(릴레이션) : 테이블 이름이라고 보면 됨. = Entity Type
+  - Tuple(튜플) : 각 집합에서 하나씩 뽑은 데이터라고 보면 됨. = Row
+
+ **3) Relation 속성**
+  - 튜플의 수는 유한하다.
+  - 튜플의 순서는 중요하지 않다.
+  - 중복된 튜플은 허용되지 않는다!
+  - 각각 속성은 다른 이름을 가져야 한다.
+  - 각 속성의 값은 반드시 atomic 해야 한다. (Multi, composite은 안된다는 소리)
+  - NULL은 허용된다.
+
+ **4) Key**
+  - Super Key(슈퍼키) : 2개의 튜플이 같은 값을 가지지 않는 속성 ({주민번호, 이름})
+  - Key : 슈퍼키 중에서 불필요한 거 뺀거 ({주민번호}, {이름, 주소})
+  - 그니까 키의 부분집합 중에 키가 있으면 그건 키가 아니라 슈퍼키라는 소리임;;
+  - 키는 유일성(하나만 있어야함)과 최소성(꼭 필요한거만 넣음)이 지켜져야함.
+  - Candidate Key(후보키) : 슈퍼키에서 최소성을 만족하면 후보키가 된다.
+  - Primary Key(기본키, PK) : 후보키 중에 선택한 키
+  - Foreign Key(외래키, FK) : 두 테이블의 데이터 간 연결을 설정하고 강제 적용하여 데이터를 제어한다.
+  - 슈퍼키 > 후보키 > 기본키
+
+ **5) 무결성 제약 조건 (Integrity Constraints)**
+  - 데이터를 CRUD하는 과정에서 무결성을 유지할 수 있도록 제약을 주는 것.
+  - Key Integrity : 한 릴레이션에는 적어도 하나의 키가 존재해야 한다.
+  - Entity Integrity : 기본키는 Null값이나 중복 값을 가질 수 없다.
+  - Referential Integrity : 기존의 PK가 사라지면 FK도 같이 사라져야 하는 것.
+
+## 5. 관계 대수 (Relational Algebra)
+
+ **1) 개념**
+  - 관계 데이터베이스에서 쿼리 처리 연산자들의 모임.
+  - SQL을 실현하는데 매우 중요함.
+
+ **2) 연산자**
+  - SELECT(σ) : 주어진 조건을 만족하는 튜플들만 출력
+  - PROJECT(π) : 원하는 attribute들만을 출력, 중복 튜플은 자동으로 소거된다!
+  - RENAME(ρ) : 릴레이션이나 어트리뷰트의 이름을 변경
+  - UNION(∪) : 합집합
+  - INTERSECTION(∩) : 교집합
+  - DIFFERENTE(-) : 차집합
+  - (CARTESIN) PRODUCT(X) : 두 릴레이션 튜플을 곱한거
+  - JOIN(▷◁) : 조건을 만족하는 것들만 연결하여 합침 ( 조건이 있는 PRODUCT)
+  - DIVISION(÷) : 나누는거, 해당 되는게 있는 것만 뽑아냄..
+  => 이 중 Select, Project, Union, Difference, Product가 Complete Set임. 다른건 유추해 낼 수 있음
+
+ **3) JOIN의 종류**
+  - Equi-join : =으로 비교한것 (주로 Equi-join을 많이 사용할텐데, 그 이유는 외래키 때문)
+  - Condition-join : =가 아닌 걸로 비교한거
+  - Natural-join(*) : 같은 컬럼으로 비교한것
+  - Self-join : 자기 자신의 컬럼 2개를 비교하는 것
+  - Outer-join : 잃어버리는 정보들도 Null로 나타내는 것. (left,right,full이 존재)
+
+ **4) 고급 연산자**
+  - Outer Union(U위에 --) : 두 릴레이션의 구조가 다를 때 사용(학생과 교수)
+  - 집계 함수(Aggregate Functions) : 정보를 구한것에 대한 통계를 보고 싶을 때 사용. (ex.COUNT, SUM, AVG, MAX, MIN)
+  - 재귀 쿼리(Recursive Query) : 같은 릴레이션 사이의 관계를 표현할 때 사용. 
+
+ **5) ER Model을 Relational Model로 바꾸기**
+  - 재주껏 하자.
+
+## 6. SQL(Structured Query Language)
+
+ **1) DDL : CREATE, DROP, ALTER**
+  - CASCADE : 연쇄반응, (튜플을)지우면 같이 지우고 바꾸면 같이 바꾼다.
+  - SET NULL : PK는 NULL로 하면 안된다.
+  - RESTRICT : 이 테이블을 참조하는 다른 테이블이 있으면 지우지 않는다.
+
+ **2) DML : SELECT**
+  - SELECT FROM WHERE : 중복되는 튜플 소거 안해줌. DISTINCT가 있어야함.
+  - DBA가 최적화 해줌. DBMS에서 서치 알고리즘과 JOIN 알고리즘에서 가장 좋은 걸 찾아서 해줌.
+  - *을 쓰면 전부에 해당
+  - 여러 테이블에 접근하려면 A.a,  B.b 이렇게 접근 가능.
+  - AS : 이름 짓기 (ex. EMP AS e)
+  - SELECT 여러 개를 UNION, INTERSECT, EXCEPT로 연산할 수 있음
+
+ **3) NULL 값의 의미**
+  - Value Unknown : 있긴 있는데 값은 몰라.
+  - Unavailable  : 있긴 있는데 알려주기 싫어.
+  - Inapplicable : 정의가 안되어있는데? 그리고 그런건 존재하지 않는데?
+  - U로 표현한다. (True = T, False = F)  이걸 수학적으로 1/2라고 치고 계산 하면 맞다.
+  - IS NULL 이나 IS NOT NULL 연산을 사용하면 널값인지 알 수 있다.
+
+ **4) JOIN ON**
+  - 'A' JOIN 'B' ON 'C'='D'  :  C가 D인 것들만 A와 B를 조인해라 
+
+ **5) Nested Queries**
+  - IN : 안에 있냐
+  - SOME(ANY) :  그 중에 어떤 값과 비교
+  - ALL :  그들의 모든 값과 비교
+  - EXISTS : 내부에 하나라도 존재하냐
+  - NOT EXISTS : 내부에 하나도 존재 안하냐
+  - NOT EXISTS + EXCEPT : DIVISION을 의미함.
+  - ex. <>SOME : 그들 중 어떤 값과 다르냐 (항상 TRUE 겠는데??), <>ALL : 그들 모든 값과 다르냐 ( =NOT IN)
+
+ **6) Aggregate Functions (집계 함수)**
+  - COUNT(*) : 개수를 구함, 이 때 NULL도 포함
+  - COUNT(DISTINCT A)에서 NULL은 미포함
+  - MAX, MIN, SUM, AVG등 여러가지 사용 가능
+
+ **7) GROUP BY**
+  - 그걸로 정렬하겠다.
+  - 그니까 당연히 여기에서 사용한 컬럼은 SELECT 문에 나와야됨..
+  - 주로 집계 함수랑 같이 사용되고 최종 통계를 위해서 사용함. 
+
+ **8) HAVING**
+  - GROUP BY의 조건절
+  - 그룹으로 묶긴 할 껀데, 조건을 달아서 묶음.. (EX. HAVING COUNT(*)>2 .. 3개이상만 나오게 하겠다)
+  - Nested Queries 와 함께 사용하는 경우도 많음. 
+
+ **9) ORDER BY**
+  - 정렬해주는거. 버블소트 같은거 쓰기 때문에 오래걸림 ;;;
+  - 2개 이상일 때는 첫번째꺼 정렬하고, 같은것 중에 두번째껄로 정렬함.
+  - ex. ORDER BY salary, SSN : salary 순으로 정렬, 같은것은 SSN 순으로 정렬
+  - ASC : 오름차순, DESC : 내림차순 (ex. ORDER BY ASC salary)
+
+ **10) DML : INSERT**
+  - INSERT INTO <table name> VALUES <list of values for the tuple>
+  - value의 순서는 속성 순서랑 일치해야된다.
+  - 물리적 저장임. (뷰는 물리적 저장이 아님)
+
+ **11) DML : DELETE**
+  - DELETE FROM <table name> Where <조건>
+  - 테이블을 지우는게 아니라, 테이블 내의 데이터들을 지우는거임.
+  - 참조되는게 있을 수 있으니 CASCADE를 항상 조심할 것.
+
+ **12) DML : UPDATE**
+  - UPDATE <table name> SET <업데이트 내용> WHERE <조건>
+ 
+ **13) Views**
+  - CREATE VIEW <view name> AS SELECT문 : 어떤 것들만 뽑아내서 뷰를 만들겠다.
+  - 뷰는 자주 참조하는 테이블의 정보를 편의를 위해서 뷰로 설정해놓는 거임.
+  - 물리적으로 저장되는게 아니라, 논리적으로 우리한테 보여주는거임..
+  - INSERT를 한다고 해도 기존의 테이블에 저장이 되는 거임.
+  - View에는 새로운 정보는 없다. 기존 정보를 응용한 정보가 있을 뿐!
+  - View에서 검색한다고 빠르지 않다. 어짜피 기존 테이블에 들어가서 다시 계산한다.
+  - 키무결성만 지켜진다면 업데이트가 가능하지만, 여러 해석이 나온다면 불가능 (ex. 집계함수)
+  - 장점 : 편리하고, 개인적으로 사용가능하고, 보안성이 좋다. (캡슐화, 정보은닉 느낌으로다가)
+  - 단점 : 성능은 비효율적, 업데이트가 제한적
+ 
+ **14) View Materialization ( 뷰 구체화 )**
+  - 뷰를 물리적으로 저장해버리는 것
+  - 장점 : 실행이 빨라진다.
+  - 단점 : 메모리 저장 용량이 늘어난다.
+  - 주로 사용하는 곳 : 업데이트가 별로 안되는 빅데이터에 주로 사용함. (Read-Only 인 것)
+
+## 7. 정규화 (Normalization)
+
+ **1) 정규화란?**
+  - 좋은 관계에 대한 가이드라인
+  - 정상적인 형태로 만들어주는것.
+  - 분해를 함으로써 중복과 부작용을 소거해준다.
+
+ **2) 관계의 문제점**
+  - Redundancy(중복) : 같은 정보가 계속 반복해서 나옴
+  - Insert Anomaly(삽입 이상) : 데이터를 넣으려는데 그 스키마가 없는경우..
+  - Delete Anomaly(삭제 이상) : 어떤 데이터를 지우려는데 관련 정보가 다 날라감
+  - Update Anomaly(갱신 이상) : 데이터를 수정하려는데 모든 튜플을 다 뒤져서 수정해야됨
+
+ **3) 해결방법**
+  - Decomposition(분해) : 테이블을 쪼개서 해결하자
+  - 필요한 테이블을 따로 만든다.
+  - Null을 최대한 적게 나오게 하자. (용량;;)
+
+ **4) FD(Functional Dependency, 함수 의존성)**
+  - 테이블의 우수성을 가늠하는 기준
+  - 속성들 사이의 상호관계에 대한 제약조건이다.
+  - 실세계에서 발생하는 제약조건이다.
+  - X->Y : X의 값이 Y의 값을 유일하게 하나 '결정'함. (ex. 과목 -> 책)
+  - 그 역은 성립하지 않으니 주의할 것.
+
+ **5) 암스트롱의 추론 규칙(Inference Rules)**
+  - 반사 규칙 : Y가 X의 부분집합일 때, X->Y는 성립함. (ex. {Phone, Name} -> Name )
+  - 확장 규칙 : X가 Y를 결정하면, 좌우에 똑같은 놈을 붙여도 된다. (ex. Phone ->Name이면, {Phone,Age}->{Name, Age})
+  - 3단 논법 : X->Y, Y->Z 이면 X->Z 이다.
+  - 분해 규칙 : X->{Y,Z} 이면 X->Y이고 X->Z 이다.
+  - 합침 규칙 : X->Y 이고 X->Z 이면, X->{Y,Z}
+
+ **6) Closure of FDs** 
+  - 그 FD 집합들로 만들어질 수 있는 모든 FD의 집합
+
+ **7) 1NF**
+  - 각각의 튜플은 pk에 식별되어야 한다.
+  - 각각의 속성은 atomic 값들을 가져야한다. (multi나 compose가 안됨)
+  - 왜냐하면 NULL이 너무 많이 생기기 때문..
+
+ **8) 2NF** 
+  - 부분종속되는 FD들을 소거
+  - 부분종속 : 키의 부분집합이 non-prime을 결정할 때 중복이 발생함.
+  - 즉, 걍 키의 부분집합이 왼쪽에 있으면 걍 다 테이블 쪼개라
+  - 비정상 테이블을 정상으로 만들어줌으로써 어노말리들을 없엠
+
+ **9) 3NF**
+  - 이행종속되는 FD들을 소거
+  - 이행종속 : 키의 부분집합이 아닌 Y를 걸쳐 non-prime인 Z를 결정하는거
+  - 즉, X->A일 때, X가 슈퍼키거나 A가 프라임이어야만함.
+  - 부속 데이터들을 위한 테이블을 따로 마련해주는 단계
+
+ **10) BCNF**
+  - 슈퍼키가 아닌 것에 종속되는 FD 소거
+  - 좌변이 무조건 슈퍼키여야함.
+  - 애초에 중복이 될만한것들을 나눠버림
+  * 분해를 많이할 수록 중복과 어노말리는 사라지지만, 성능은 낮아진다. (검색시간 늘어남)
+
+## 8. Relational Design
+
+ **1) Lossless Join**
+  - 분해를 하고 다시 자연조인을 했는데, 이상한 튜플들이 생겼다면 그것은 Lossy Join임.
+  - 원래랑 같다면 Lossless Join임
+  - Testing : R1 ∩ R2 -> R1-R2가 F+에 속하면 무손실조인이라고 할 수 있다.
+
+ **2) FD 보존**
+  - FD가 보존되면 FD 위반에 대한 검증 비용이 감소되므로 좋음.
+  - 다만, 권장사항일 뿐이지 필수사항은 아님.
+  - Testing : 각각 나눠진걸, Closure하고 합했을 때, FD가 전부 보존되는지 보면 됨
+
+ **3) Lossless BCNF**
+  - BCNF를 위반하는 애들을 계속 빼서 테이블을 만들어 준다.
+  - 순서에 따라 다른 BCNF가 만들어진다.
+  - BCNF는 FD보존이 안되지만, 3NF는 FD보존이 된다.
+
+ **4) MVD (Multi-Valued Dependency)**
+  - BCNF가 해결하지 못하는 중복을 해결해줌
+  - 여러개가 나올 수 있다는 걸 알려주는 거임
+  - 화살표 두 개
+
+ **5) 비교**
+  - 2NF : FD보존, Lossless, 중복 조금 줄여줌
+  - 3NF : FD보존, Lossless, 중복 많이 줄여줌
+  - BCNF : FD보존X, Lossless, 중복 거의 다 줄여줌
+  - 4NF : FD보존X, Lossless, MVD 중복까지 줄여줌
+
+ **6) 비정규화**
+  - 빅데이터 시대가 오면서 용량보다는 검색이 빨라야하므로 이제 2NF까지 거슬러 올라간다.
+
+## 9. Database Storage 
+
+ **1) 저장소 계층**
+  - Primary : 캐쉬, 메인메모리 (속도가 ns단위, 비싸고 용량이 적다, 휘발성이다)
+  - Secondary : 하드디스크, 플래쉬메모리(속도가 ms단위, 싸고 용량이 크다, 비휘발성, 직접접근)
+  - Tertiary : 테이프, 광학 (순차접근)
+
+ **2) 디스크 저장소**
+  - 메인메모리에서 디스크로 읽어올 때, block(page) 단위로 읽어온다.
+  - 블락은 트랙에 정렬되고, 트랙은 플래터에 정렬됨.
+  - 플래터는 앞 뒤 두 면을 쓴다.
+  - 섹터 사이즈는 포맷 시에 하드웨어가 정해주는데, 블락 사이즈는 여러개의 섹터로 내가 정한다.
+  - 각 섹터는 바깥쪽이라서 더 큰게 아니라, 어짜피 압축되므로 안쪽이나 바깥쪽이나 용량은 같다.
+  - 실린더는 트랙의 갯수만큼 있다고 생각하면 된다.
+  - RPM(Revolution Per Minute) : 원이 1분당 몇 번 도는지 (7200rpm이면 8.33ms에 한바퀴)
+  - disk arm과 head는 한 번에 하나의 읽기 또는 쓰기를 한다.
+  - 디스크 용량 = 트랙 사이즈 X 표면 사이즈(트랙의 개수) X 표면의 개수 (2표면 = 1플래터)
+  - 플래터 > 표면 > 트랙 > 블락 > 섹터
+
+ **3) 디스크 접근 시간**
+  - 탐색 시간(Seek Time) : 원하는 트랙으로 헤더가 이동하는 시간 (이게 오래걸림, 5~30ms)
+  - 특히, 헤더가 맨 끝에 있을때는 1/2, 가운데는 1/4이니까 평균 1/3정도 걸림
+  - 회전 지연(Rotational Delay) : 원이 돌아가면서 원하는 블락을 찾는거
+  - 평균은 1/2 * 1/rpm
+  - 전송 시간(Transfer Time) : 그 블락의 바이트를 모두 읽어들이는 시간 = block size/transfer rate
+  - 최소 : 내가 있던 위치가 블락의 위치인 경우 전송만 하면 됨.
+  - 평균 : Ts는 1/3, Tr은 1/2
+  - 최악 : Ts는 1, Tr도 1
+  - 디스크에서 읽어오는 시간은 항상 바뀜. 하지만 메인메모리는 랜덤접근이라서 항상 같음.
+  - 자주 같이 사용하는 블락은 옆에다 저장해놓는다면 seek time을 줄일 수 있다.
+  - 같은 트랙에 넣지 못한다면 같은 실린더에라도 넣자.
+  - 걸리는 시간 : Ts > Tr > Tt
+  - 그래서 여러개의 작은 디스크에 '분산저장'하는게 좋음. (seek time이 줄어들으므로)
+
+ **4) Buffer Manager**
+  - 내가 원하는 블락은 무조건 메인메모리에 있어야하고, 없다면 버퍼 매니적 하드디스크에서 가져다줘야한다.
+  - 네모 하나가 frame이다.
+  - 그 네모에 핀이 꼽혀있다 : 사용하고 있다 (내쫒으면 절대 안됨)
+  - 그 네모에 핀이 꼽혀있지 않다 : 사용하지 않는다 (내쫒아도 됨)
+  - free frame이 없을 때는 핀이 꼽혀있지 않은 네모를 내쫒아야된다.
+  - 이 때, 업데이트가 되었는지 알아야되는데 dirty 비트를 확인해보면 된다. (업데이트가 되었다면 write를 하고 내쫒는다)
+
+ **5) Record**
+  - 파일에서는 Table이 File, Attribute가 Field, Tuple이 Record이다.
+  - Fixed-length record : 고정 길이 레코드, 검색이 쉽다.
+  - Variable-length record : 가변 길이 레코드, 검색이 어렵다. 그리고 중간에 구별 마크를 추가로 넣어야한다. 그러나 공간을 효율적으로 사용할 수 있다.
+
+ **6) bfr (blocking factor)**
+  - 블락당 몇 개의 레코드를 저장할 수 있는지. (레코드 개수)
+  - B : 블락 사이즈, R : 레코드 사이즈
+  - bfr = floor(B/R), 나머지는 버린다. 왜냐하면 다 저장을 못하는 크기니까.
+  - 반대로 B = ceil(R/bfr), 조금만 넘쳐도 블락 1개를 줘야하니까
+
+ **7) span**
+  - R > B인 것들(오디오, 이미지)은 한 블락에 레코드를 넣을 수 없으니까.
+  - 다음 블락에 레코드를 잘라서 붙임. spanned라고 불림. 레코드 사이즈가 크면 이거 사용.
+  - B > R인 것들은 걍 공간이 남으면 unspanned라고 불림. (고정 길이 레코드)
+  - 가변길이 레코드일 때, bfr은 블락당 '평균' 레코드 수를 의미한다.
+  - 남는 공간들 : B - (bfr * R)
+
+ **8) File Organization**
+  - Heap File : 랜덤하게 유지
+  - Scan은 다 읽어야됨. Find-Equality는 선형검색, Find-Range도 선형검색, Insert는 2번만에 가능 매우효율적, Delete는 선형검색으로 찾은다음에 지워도 되고 나중에 마크해뒀다 지워도됨.
+  - Sequential File : 소팅이 되어있음
+  - Scan은 다 읽어야됨. Find-Equality는 이진검색, Find-Range는 이진검색, Insert는 평균 0.5b를 밀어야돼서 느림.. delete도 느림..
+  - 즉, Heap File은 삽입/삭제가 좋고, Sequential File은 검색이 좋다.
+
+## 10. Index File
+
+ **1) Index File Entry**
+  - <필드 값, 포인터 값>
+  - 정렬이 되어있음
+  - Data record의 크기는 막 100바이트인데, Index Entry는 겨우 8바이트임
+  - 그래서 인덱스는 디스크 블락이 적게 필요함.
+  
+ **2) Primary Index**
+  - 키가 정렬 되어있음
+  - 블락의 첫번째 record만 인덱싱함. (굉장히 Sparce)
+  - 블락이 클수록 Index의 개수는 적어짐 -> index file은 작아짐 -> 이진 검색 하면 됨
+
+ **3) Secondary Index**
+  - 키가 정렬이 되어있지 않음 (일반적으로)
+  - 인덱스를 다 깔아줘야함. (Dence) 
+  - primary가 1000개라면, secondary는 10000개임.. 근데 사실 이진 검색하면 그게 그거임.;;
+
+ **4) Multi-Level Index**
+  - 탐색시간 = 높이, 높이를 낮게 해야 fanout(=bfr)이 증가한다.
+  - 검색은 Leaf에서 한다.
+  - DB는 보통 100~200개의 자식을 낳는다.
+  - 포인터의 개수는 필드값보다 하나 많다.
+  - 균형이 맞아야 모두 시간이 같아진다.
+  - 각 리프 노드를 링크드리스트로 연결하면 range가 빨라진다.
+  - 각 노드에 여유 공간을 남겨두면 삽입/삭제가 효율적이다.
+
+ **5) ISAM File**
+  - 데이터는 키에 의해 정렬되어있다.
+  - 오버플로우 chain을 위한 공간이 따로 할당되어있다.
+  - 삽입/삭제만 없으면 검색은 이게 가장 좋음
+  - overflow를 한 곳만 집중공격당하면 성능이 급속도로 저하
+  - 데이터 값을 지워도, 그게 인덱스에 있었다면 인덱스는 그대로 남아있음
+  - Static Indexing
+
+ **6) B Tree**
+  - tree pointer가 q개, data pointer는 q-1개
+  - 키 값은 정렬 된다.
+  - 높이 균형을 유지해야함
+  - Root를 제외한 각 node는 최소 50%를 채워야함
+  - B Tree는 push up만 발생
+  - Dynamic Indexing
+
+ **7) B+ Tree**
+  - 모든 데이터들은 leaf node에서만 저장이 된다. ( 각 노드들의 fanout을 크게해서 tree의 높이를 줄이려고)
+  - internal node에는 tree pointer만 존재함.
+  - leaf node들은 오름차순으로 linked list로 모두 연결되어있음. (range 빠르게하려고)
+  -  B+ Tree는 push up과 copy up 모두 발생
+  - Dynamic Indexing
+
+ **8) B+ 트리의 Insert와 Delete**
+  - 나중에 더 자세히 알아보자.
+
+## 11. Transaction Processing
+
+ **1) 트랜잭션 (Transaction)**
+  - DBMS에서 돌아가는 프로그램
+  - 하드에서 데이터를 직접만짐
+  - 이게 여러개가 있을 때 동시성 문제가 발생함
+  - 직렬보단 끼어들기를 사용하고 있다. (매우 빠름)
+
+ **2) 동시성 문제**
+  - 서로 다른 변수를 건드리는건 동시에 해도 상관이 없지만
+  - 같은 변수를 동시에 건드리는건 중간에 문제가 발생한다.
+  - Lost Update : 업데이트한게 사라짐
+  - Incorrect Summary : 아직 업데이트 되기 전인데 다 집계해버림
+  - Unrepeatable Read : 2번 읽어야되는 작업이 있는데, 첫번째랑 두번째 내용이 달라짐
+
+ **3) ACID rules**
+  - Atomicity : 트랜잭션이 원자단위로 이루어진다. fail이 되면 취소하고 역추적하여 롤백을 함. 롤백을 위해 어떤 안전한 장치에 로그가 저장되어 있음.
+  - Consistency : 전과 후의 합이 같아야함.
+  - Isolation : 중간값이 다른애들에게 보이면 안됨 (Unrepeatable Read 발생)
+  - Durability : 디스크에 저장하려고 할 때, 끝까지 책임져주는것. Redo를 해준다.
+
+ **4) Scheduling Transaction**
+  - Serial(직렬)은 완벽함. 너무 좋은데 느려서 사용할 수가 없음.
+  - 근데 non-Serial은 동시성 문제가 발생해버림..
+  - 특히, Write가 있을 경우에 충돌연산이 발생해버림 (WR, RW, WW)
+
+ **5) Conflict Serializability (non-Serial이지만 직렬화가 잘 되어있는 것)**
+  - 실제 Serial과 non-Serial의 충돌가능성이 있는 연산들의 순서를 비교해본다.
+  - 비교했는데 같다면, non-Serial은 Serializability 되었다고 말함. (= 충돌이 일어나지 않는다!)
+  - 데드락과 같은 상황이 일어날 수 있음 ( Cycle이 생길 경우 )
+
+ **6) Lock Approach**
+  - Shared(S)-Lock = Read-Lock : 1개 이상 걸 수 있음, 읽기만 하는거임
+  - eXclusive-Lock = Write-Lock : 오직 1개만 걸 수 있음, 쓰기도 하는거임
+  - Unlock : 락을 푸는 것
+  - Locking Protocol
+   (1) 읽기 전에는 S락을 건다
+   (2) 쓰기 전에는 X락을 건다
+   (3) 락이 걸려있으면 기다린다
+   (4) 읽거나 쓰는것이 끝났으면 락을 푼다.
+  - Two-Phase Locking (2PL) : 모든 락은 언락 앞에 온다
+
