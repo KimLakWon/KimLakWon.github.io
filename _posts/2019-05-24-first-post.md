@@ -9,7 +9,7 @@ categories: jekyll update
 
 # STACK 구현
 
-```
+```c
 #include<iostream>
 
 using namespace std;
