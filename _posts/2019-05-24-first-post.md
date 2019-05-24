@@ -8,22 +8,8 @@ categories: jekyll update
 ---
 
 # STACK 구현
-```c++
-#include<iostream>
 
-using namespace std;
-
-typedef struct Node* pNode;
-
-typedef struct Node{
-	int data;
-	pNode next;
-}Node;
-
-
-```
-
-```cpp
+```c
 #include<iostream>
 
 using namespace std;
@@ -51,7 +37,6 @@ void DeleteStack(Stack* stack){
 	for(;(stack->top)!=NULL;){
 		pNode tmpNode = stack->top;
 		stack->top = tmpNode->next;
-		cout<<"aa"<<endl;
 		delete tmpNode;
 	}
 	delete stack;
