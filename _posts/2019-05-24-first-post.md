@@ -8,8 +8,22 @@ categories: jekyll update
 ---
 
 # STACK 구현
+```c++
+#include<iostream>
 
-```c
+using namespace std;
+
+typedef struct Node* pNode;
+
+typedef struct Node{
+	int data;
+	pNode next;
+}Node;
+
+
+```
+
+```cpp
 #include<iostream>
 
 using namespace std;
